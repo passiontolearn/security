@@ -22,9 +22,24 @@ struct config_option {
     char value[CONFIG_MAX];
 };
 
+void skipComments(FILE* fp)
+{
+    // Based on:    http://www2.cs.siu.edu/~wainer/585S00/CUBE/ppmRead.c
+ 	char buf[1024];
+	while (1) {
+	   fscanf(fp, "%1s", buf);
+	   if (buf[0] != '#') {
+            ungetc(buf[0], fp);
+            return;
+        }
+        else {
+            fgets(buf, 1024, fp); /* skip comment line */
+        }
+    }
+}
+
 config_option_t read_config_file(char* path) {
     FILE* fp;
-
     if ((fp = fopen(path, "r+")) == NULL) {
         fprintf(stderr, "fopen() : failed to open or read the conf file '%s'\n", path);
         return NULL;
@@ -32,7 +47,9 @@ config_option_t read_config_file(char* path) {
 
     config_option_t listhead = NULL, current = 0;
     int first_match = 0;
-    while(1) {
+
+    while( 1 ) {
+        skipComments( fp );  // Skip comments in the beginning and end of the file
         config_option_t conf_opt = NULL;
         if ((conf_opt = calloc(1, sizeof(config_option))) == NULL)
             continue;
@@ -40,16 +57,10 @@ config_option_t read_config_file(char* path) {
         // Match  key = value (ignoring whitespace)
         if ( fscanf(fp, " %"STRINGIFY(CONFIG_MAX)"[^=]=%"STRINGIFY(CONFIG_MAX)"s",
                 &conf_opt->key[0], &conf_opt->value[0]) != 2)  {
+
             if (feof(fp)) {
                 free(conf_opt);
                 break;
-            }
-            if (conf_opt->key[0] == '#') {
-                while (fgetc(fp) != '\n') {
-                    // Do nothing (to move the cursor to the end of the line).
-                }
-                free(conf_opt);
-                continue;
             }
             fprintf(stderr, "fscanf() error while parsing a line in the conf file");
             free(conf_opt);
