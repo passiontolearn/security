@@ -49,7 +49,7 @@ config_option_t read_config_file(char* path) {
     int first_match = 0;
 
     while( 1 ) {
-        skipComments( fp );  // Skip comments in the beginning and end of the file
+        skipComments( fp );  // Skip comments in the config file
         config_option_t conf_opt = NULL;
         if ((conf_opt = calloc(1, sizeof(config_option))) == NULL)
             continue;
