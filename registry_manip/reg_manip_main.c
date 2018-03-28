@@ -1,6 +1,5 @@
 #include <windows.h>
 #include <stdio.h>
-#include <tchar.h>
 #include "reg_manip_conf_parser.h"
 
 int read_conf_file(config_option_t* reg_opt) {
@@ -82,7 +81,9 @@ int write_to_reg(config_option_t reg) {
         char sep[2] = "\\";
         char *first_part, *subkey, *reg_val;
 
-        // WARNING: the first param sent will also be modified by split_str() !
+        /* Split to get the root hive hey.
+         * WARNING: the first param sent will also be modified by split_str() !
+         */
         int SPLIT_OK = split_str(reg_str, sep, &first_part, &subkey);
 
       // TODO:
@@ -90,6 +91,8 @@ int write_to_reg(config_option_t reg) {
         if (SPLIT_OK) {
             HKEY root_key = get_root_key(first_part);
 
+            /*  Split these for example: AppInit_DLLs,C:\MyAppHook.dll   to get the reg_key and value...
+            */
             reg_str = reg->value;
             SPLIT_OK = split_str(reg_str, ",", &first_part, &reg_val );
 
