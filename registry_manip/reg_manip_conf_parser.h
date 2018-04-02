@@ -25,10 +25,10 @@ struct config_option {
 void skipComments(FILE* fp)
 {
     // Based on:    http://www2.cs.siu.edu/~wainer/585S00/CUBE/ppmRead.c
- 	char buf[1024];
-	while (1) {
-	   fscanf(fp, "%1s", buf);
-	   if (buf[0] != '#') {
+    char buf[1024];
+    while (1) {
+       fscanf(fp, "%1s", buf);
+       if (buf[0] != '#') {
             ungetc(buf[0], fp);
             return;
         }
