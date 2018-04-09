@@ -8,7 +8,7 @@
 * 2. Code based on the following parser: https://github.com/welljsjs/Config-Parser-C/blob/master/parser.h
      - Improved parsing   key=value    works as well as
                           key = value  (with spaces)
-     - Keys and Values list is returned in correct the order (!)
+     - Keys and Values list is returned in the correct order (!)
        (original parser returned them in reverse order...)
      - *Buffer for capturing the key/value is much larger and you only need to update it in one place :)
      - *Fixed a potential Memory leak when it reached EOF
