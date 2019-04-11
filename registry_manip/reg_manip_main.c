@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <stdio.h>
+#include <string.h>
 #include "reg_manip_conf_parser.h"
 
 int read_conf_file(config_option_t* reg_opt) {

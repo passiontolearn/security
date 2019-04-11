@@ -55,7 +55,7 @@ config_option_t read_config_file(char* path) {
             continue;
 
         // Match  key = value (ignoring whitespace)
-        if ( fscanf(fp, " %"STRINGIFY(CONFIG_MAX)"[^=]=%"STRINGIFY(CONFIG_MAX)"s",
+        if ( fscanf(fp, " %"STRINGIFY(CONFIG_MAX)"[^=]=%"STRINGIFY(CONFIG_MAX)"[^\n]s",
                 &conf_opt->key[0], &conf_opt->value[0]) != 2)  {
 
             if (feof(fp)) {
@@ -80,4 +80,3 @@ config_option_t read_config_file(char* path) {
     }
     return listhead;
 }
-
